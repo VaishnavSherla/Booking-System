@@ -22,7 +22,7 @@ What i choose was first option
 # Demo
 ![Demo](demo/demo.gif)
 
-Check high quality demo [here](/demo/demo.mp4)
+Check high quality demo [here](/demo/Demo.mp4)
 
 # Technical things
 Database schema is available [here](/database-schema.sql).
