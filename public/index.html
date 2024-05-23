@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-register" style="display: none;">
+        <h2>Login</h2>
+        <form id="loginForm" >
+            <label>Email: <input type="email" id="loginEmail" required></label><br>
+            <label>Password: <input type="password" id="loginPassword" required></label><br>
+            <button type="submit">Login</button>
+        </form>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label>Username: <input type="text" id="registerUsername" required></label><br>
+            <label>Email: <input type="email" id="registerEmail" required></label><br>
+            <label>Password: <input type="password" id="registerPassword" required></label><br>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    
+    <div id="home" style="display:none;">
+        <h2>Select Date</h2>
+        <input type="date" id="flightDate">
+        <button id="searchFlights">Search Flights</button>
+        <div id="flights"></div>
+    </div>
+
+    <div id="seats" style="display:none;">
+        <h2>Seats</h2>
+        <table id="tbl"></table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const res = await fetch('/api/users/validate-token', {
+                        method: 'GET',
+                        headers: {
+                            'auth-token': `${token}`
+                        }
+                    });
+                    if (res.ok) {
+                        document.getElementById('home').style.display = 'block';
+                    } else {
+                        document.getElementById('login-register').style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('login-register').style.display = 'block';
+                }
+            } else {
+                document.getElementById('login-register').style.display = 'block';
+            }
+        });
+
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const flightDateInput = document.getElementById('flightDate');
+        const searchFlightsButton = document.getElementById('searchFlights');
+        const flightsDiv = document.getElementById('flights');
+        const seatsDiv = document.getElementById('seats');
+        const tbl = document.getElementById('tbl');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch('/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    const token = res.headers.get('auth-token');
+                    localStorage.setItem('token', token);
+                    document.getElementById('login-register').style.display = 'none';
+                    document.getElementById('home').style.display = 'block';
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const res = await fetch('/api/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    const token = res.headers.get('auth-token');
+                    alert('Registration successful! Please log in.');
+                    localStorage.setItem('token', token);
+                    document.getElementById('login-register').style.display = 'none';
+                    document.getElementById('home').style.display = 'block';
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        searchFlightsButton.addEventListener('click', async () => {
+            const date = flightDateInput.value;
+            if (!date) {
+                alert('Please select a date.');
+                return;
+            }
+            parsedDate = new Date(date)
+            try {
+                const res = await fetch(`/api/flights/by-date/${parsedDate}`, {
+                    headers: {
+                        'auth-token': `${localStorage.getItem('token')}`
+                    }
+                });
+                const flights = await res.json();
+                displayFlights(flights, parsedDate);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        function displayFlights(flights, date) {
+            flightsDiv.innerHTML = '<h3>Available Flights</h3>';
+            console.log(flights)
+            flights.forEach(flight => {
+                const flightButton = document.createElement('button');
+                flightButton.textContent = `Flight ${flight.flight_number} (${flight.departure_airport} to ${flight.destination_airport})`;
+                flightButton.addEventListener('click', () => {
+                    displaySeats(flight.flight_id, date);
+                });
+                flightsDiv.appendChild(flightButton);
+                flightsDiv.appendChild(document.createElement('br'));
+            });
+        }
+
+        async function displaySeats(flightId, date) {
+            try {
+                const res = await fetch(`/api/seats/${flightId}/${date}`, {
+                    headers: {
+                        'auth-token': `${localStorage.getItem('token')}`
+                    }
+                });
+                const seats = await res.json();
+                seatsDiv.style.display = 'block';
+                renderSeats(seats);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        
+        async function renderSeats(seats) {
+            tbl.innerHTML = '';
+            for (let i = 0; i < seats.length; i++) {
+                if (i % 3 === 0)
+                    var tr = document.createElement("tr");
+                const td = document.createElement("td");
+                td.textContent = seats[i].seat_number;
+                td.style.backgroundColor = seats[i].seat_status ? 'Red' : 'Green';
+                td.style.width = '50px';
+                td.style.height = '50px';
+                td.addEventListener("click", async (e) => {
+                    try {
+                        if (seats[i].seat_status) {
+                            const id = e.target.textContent;
+                            const confirmBooking = confirm('Do you want to book this seat?');
+                            if (confirmBooking) {
+                                try {
+                                    const res = await fetch('/api/bookings', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'auth-token': localStorage.getItem('token'),
+                                        },
+                                        body: JSON.stringify({ flight_id: seats[i].flight_id, seat_id: seats[i].seat_id }),
+                                    });
+                                    const data = await res.json();
+                                    if (res.ok) {
+                                        alert('Seat booked successfully!');
+                                        e.target.style.backgroundColor = 'Red';
+                                        seats[i].seat_status = true;
+                                    } else {
+                                        alert(data.error);
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    alert("Failed: " + error);
+                                }
+                            }
+                        } else {
+                            alert("Failed: Already booked")
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                });
+                tr.appendChild(td);
+                if ((i + 1) % 3 === 0 || i === seats.length - 1)
+                    tbl.appendChild(tr);
+            }
+        }      
+    </script>
+</body>
+</html>
+

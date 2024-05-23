@@ -1,0 +1,461 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Flight Booking API",
+    "collectionId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+    "dateExported": "2024-05-23T19:16:23.665Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "5d2bb177-03e3-49b0-a8d4-a9800aab4263",
+            "name": "seats",
+            "containerId": "",
+            "created": "2024-05-23T10:47:25.510Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "flights",
+            "containerId": "",
+            "created": "2024-05-23T10:47:25.511Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "e77709d8-2b1f-4e3f-b91e-4defdd4d002e",
+            "name": "bookings",
+            "containerId": "",
+            "created": "2024-05-23T10:47:25.512Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "6f66aa10-e765-41f7-90ea-f3411f7c7664",
+            "name": "aircraft",
+            "containerId": "",
+            "created": "2024-05-23T10:47:25.513Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "6847062d-1164-4db0-a445-78701e1ce644",
+            "name": "users",
+            "containerId": "",
+            "created": "2024-05-23T10:47:25.514Z",
+            "sortNum": 50000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "2ad3b1d7-ef52-4f1f-a3d7-98d033c8514d",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "5d2bb177-03e3-49b0-a8d4-a9800aab4263",
+            "name": "Read seat details",
+            "url": "{{baseUrl}}/seats/{id}",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-23T10:47:25.510Z",
+            "modified": "2024-05-23T13:08:29.806Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "37",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "364623d6-22d6-4c76-81e5-03089639b25a",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "5d2bb177-03e3-49b0-a8d4-a9800aab4263",
+            "name": "Get seats for a specific flight",
+            "url": "{{baseUrl}}/seats/{flight_id}/{date}",
+            "method": "GET",
+            "sortNum": 17500,
+            "created": "2024-05-23T12:26:20.793Z",
+            "modified": "2024-05-23T13:08:09.947Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "flight_id",
+                    "value": "5",
+                    "isPath": true
+                },
+                {
+                    "name": "date",
+                    "value": "2024-05-27",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"flight_number\": \"AA405\",\n  \"departure_airport\": \"HYD\",\n  \"destination_airport\": \"VIZ\",\n  \"departure_time\": \"2024-05-24T10:00:00\",\n  \"arrival_time\": \"2024-05-24T11:30:00\",\n  \"aircraft_id\": 2,\n  \"price\": 250.50\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "a2821dd4-98e0-4fb2-99ab-afedbb72da87",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "5d2bb177-03e3-49b0-a8d4-a9800aab4263",
+            "name": "Update seat details",
+            "url": "{{baseUrl}}/seats/{id}",
+            "method": "PUT",
+            "sortNum": 25000,
+            "created": "2024-05-23T10:47:25.511Z",
+            "modified": "2024-05-23T13:08:56.238Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "37",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"flight_id\": \"4\",\n  \"seat_number\": \"30\",\n  \"seat_status\": \"false\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "e61a9582-147f-49f8-81ef-67bd8f5c6e68",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "Update flight details",
+            "url": "{{baseUrl}}/flights/{id}",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-05-23T10:47:25.514Z",
+            "modified": "2024-05-23T13:09:48.415Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "3",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"flight_number\": \"AA405\",\n  \"departure_airport\": \"HYD\",\n  \"destination_airport\": \"VIZ\",\n  \"departure_time\": \"2024-05-24T10:00:00\",\n  \"arrival_time\": \"2024-05-24T11:30:00\",\n  \"aircraft_id\": 2,\n  \"price\": 250.50\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "320d6865-d8cc-4d18-b8ea-8b5e55681d59",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "Create a new flight",
+            "url": "{{baseUrl}}/flights",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-05-23T10:47:25.515Z",
+            "modified": "2024-05-23T13:05:46.513Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"flight_number\": \"AA45\",\n  \"departure_airport\": \"HYD\",\n  \"destination_airport\": \"VIZ\",\n  \"departure_time\": \"2024-05-27T10:00:00\",\n  \"arrival_time\": \"2024-05-28T11:30:00\",\n  \"aircraft_id\": 2,\n  \"price\": 250.50\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "28fbd2a9-dca3-42aa-af4f-74988d17ced1",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "Delete a flight",
+            "url": "{{baseUrl}}/flights/{id}",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2024-05-23T10:47:25.516Z",
+            "modified": "2024-05-23T13:10:27.343Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "5",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "ef536923-9800-454d-b52c-292fb1979907",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "Read flight details",
+            "url": "{{baseUrl}}/flights/{id}",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-23T10:47:25.517Z",
+            "modified": "2024-05-23T11:03:48.600Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "3ad9b35f-af63-4670-a5d9-71d7b1e0d47c",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "e77709d8-2b1f-4e3f-b91e-4defdd4d002e",
+            "name": "Read booking details",
+            "url": "{{baseUrl}}/bookings/{id}",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-05-23T10:47:25.521Z",
+            "modified": "2024-05-23T11:03:00.878Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "<integer>",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "8e14d3b1-5faf-47e4-b263-661acfb0d4f1",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "e77709d8-2b1f-4e3f-b91e-4defdd4d002e",
+            "name": "Create a new booking",
+            "url": "{{baseUrl}}/bookings",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2024-05-23T10:47:25.522Z",
+            "modified": "2024-05-23T18:47:58.049Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"flight_id\": \"<integer>\",\n  \"seat_id\": \"<integer>\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "9bd2bab6-afce-4a68-bbb9-7d7657f4479b",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6f66aa10-e765-41f7-90ea-f3411f7c7664",
+            "name": "Delete an aircraft",
+            "url": "{{baseUrl}}/aircraft/{id}",
+            "method": "DELETE",
+            "sortNum": 130000,
+            "created": "2024-05-23T10:47:25.523Z",
+            "modified": "2024-05-23T10:55:04.690Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "3",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "93965615-2f5e-4bd3-851b-75c265a73589",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6f66aa10-e765-41f7-90ea-f3411f7c7664",
+            "name": "Update aircraft details",
+            "url": "{{baseUrl}}/aircraft/{id}",
+            "method": "PUT",
+            "sortNum": 140000,
+            "created": "2024-05-23T10:47:25.524Z",
+            "modified": "2024-05-23T10:54:51.104Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"AirBus 3800\",\n  \"total_seats\": \"25\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "ceddd6c9-60ed-450e-8457-906acf1c823e",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "Flight by date",
+            "url": "{{baseUrl}}/flights/by-date/{date}",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2024-05-23T17:53:18.820Z",
+            "modified": "2024-05-23T19:14:39.632Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "date",
+                    "value": "2024-05-27",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "4b7c8029-3295-4fae-ba0b-31b6404443d4",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6f66aa10-e765-41f7-90ea-f3411f7c7664",
+            "name": "Read aircraft details",
+            "url": "{{baseUrl}}/aircraft/{id}",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2024-05-23T10:47:25.525Z",
+            "modified": "2024-05-23T10:54:25.013Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "40cbd6f9-e8d8-4d18-bdba-8af734ba5e09",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6f66aa10-e765-41f7-90ea-f3411f7c7664",
+            "name": "UnDelete the aircraft",
+            "url": "{{baseUrl}}/aircraft/undelete/{id}",
+            "method": "PUT",
+            "sortNum": 155000,
+            "created": "2024-05-23T13:35:13.089Z",
+            "modified": "2024-05-23T13:35:58.507Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "44aaf848-ffc4-439c-84a1-5b33ef097ef9",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6f66aa10-e765-41f7-90ea-f3411f7c7664",
+            "name": "Create a new aircraft",
+            "url": "{{baseUrl}}/aircraft",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2024-05-23T10:47:25.526Z",
+            "modified": "2024-05-23T15:54:02.779Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "auth-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIwLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTY0Nzk1NTYsImV4cCI6MTcxNjQ4MzE1Nn0.apLJeJTAplSkA0h1xwA3vXBie1J5CaoAUWiFZObeBUQ"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Boeing\",\n  \"total_seats\": \"40\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "d01facc8-0155-4f3e-9836-6a1f08b6e97f",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6847062d-1164-4db0-a445-78701e1ce644",
+            "name": "Register a new user",
+            "url": "{{baseUrl}}/users/register",
+            "method": "POST",
+            "sortNum": 170000,
+            "created": "2024-05-23T10:47:25.527Z",
+            "modified": "2024-05-23T15:57:36.386Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"Johssdn\",\n  \"email\": \"neaaw@gmail.com\",\n  \"password\": \"Hi@a23@1\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "4eac26ac-87a0-41d0-bdd8-6e143af6d988",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "6847062d-1164-4db0-a445-78701e1ce644",
+            "name": "User login",
+            "url": "{{baseUrl}}/users/login",
+            "method": "POST",
+            "sortNum": 180000,
+            "created": "2024-05-23T10:47:25.528Z",
+            "modified": "2024-05-23T15:41:06.947Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"John@gmail.com\",\n  \"password\": \"Hi@a23@1\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "957d2e2c-1b1c-47ec-a569-b787146e272f",
+            "colId": "cbc56958-1366-42a0-8bab-a72b6d32ae1c",
+            "containerId": "628cc590-3a4e-4ad1-ace2-1f9a39497f3c",
+            "name": "UnDelete the Flight",
+            "url": "{{baseUrl}}/flights/undelete/{id}",
+            "method": "PUT",
+            "sortNum": 200000,
+            "created": "2024-05-23T13:27:22.776Z",
+            "modified": "2024-05-23T13:29:18.401Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "5",
+                    "isPath": true
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "headers": [
+            {
+                "name": "auth-token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzE2NDg4OTM1LCJleHAiOjE3MTY0OTI1MzV9.hJRAl2T6O1pmFuQmUdoBDKNmqsw7Z0tSWv-rHakLMLc"
+            }
+        ]
+    },
+    "ref": "h0lpmiWvrxaWIlCQYPOo25o-YRF9Yze0e3l08bIFfzCKkWHu3hcBU5Uv-ZYkFSqKKd8l8TCQha_rjKZo5OrSUg"
+}
