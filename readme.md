@@ -1,6 +1,11 @@
-# Booking System: Solved Double Booking Problem!
+# Booking System: Solving Double Booking Problem!
+I implemented this project to understand how booking systems work
 
-I implemented this project to understand how booking systems work. There are two primary approaches to handling concurrency in booking systems:
+**Issue:** When multiple users attempt to book the same seat simultaneously, it's possible for both bookings to be accepted, leading to a double booking.
+
+**Solution:** Implement a locking mechanism to ensure that once a seat is booked, it becomes unavailable for next bookings.
+
+There are two primary approaches to handling concurrency:
 
 - **Pessimistic Lock:**
   - More cautious approach.
@@ -22,7 +27,7 @@ What i choose was first option
 # Demo
 ![Demo](demo/demo.gif)
 
-Check high quality demo [here](/demo/demo.mp4)
+Check high quality demo [here](/demo/Demo.mp4)
 
 **Simulation:** This Python [script](/simulation/simulate.py) simulates a double booking scenario for the booking system using multi-threading. It generates multiple user accounts, each attempting to book seats concurrently, testing the system's robustness against potential double bookings.
 
@@ -38,7 +43,7 @@ Thunder Client is [here](/airLineThunderClient.json).
 - Express
 - Postgres
 
-**Incomplete Things:**
+**Incomplete Features:**
 - I didn't use the username at all. If you feel it's redundant, you can make some changes and remove it.
 - I forgot to create the `places` table. This could benefit you in searching for places like arrival and destination. My goal was to develop it and solve the double booking concurrency issue, so I didn't implement it.
 - I didn't include validations for dates (before and after). I didn't check if the user is trying to book a flight before the current date.
