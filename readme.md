@@ -1,8 +1,9 @@
 # Booking System: Solving Double Booking Problem!
 I implemented this project to understand how booking systems work
 
-**Issue: ** When multiple users attempt to book the same seat simultaneously, it's possible for both bookings to be accepted, leading to a double booking.
-**Solution: ** Implement a locking mechanism to ensure that once a seat is booked, it becomes unavailable for next bookings.
+**Issue:** When multiple users attempt to book the same seat simultaneously, it's possible for both bookings to be accepted, leading to a double booking.
+
+**Solution:** Implement a locking mechanism to ensure that once a seat is booked, it becomes unavailable for next bookings.
 
 There are two primary approaches to handling concurrency:
 
