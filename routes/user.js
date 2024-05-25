@@ -26,10 +26,10 @@ router.post('/login', async (req, res) => {
         if (!validPassword) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
-        const token = jwt.sign({ userId: user.rows[0].user_id, isAdmin: user.rows[0].is_admin}, config.get('JWT_SECRET'), { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.rows[0].user_id, username: user.rows[0].username, isAdmin: user.rows[0].is_admin }, config.get('JWT_SECRET'), { expiresIn: '1h' });
         
         res.setHeader('auth-token', token);
-        res.json({ message: 'User logged in successfully' });
+        res.json({ message: 'User logged in successfully', username: user.rows[0].username });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -65,10 +65,10 @@ router.post('/register', async (req, res) => {
             [username, email, newPassword]
         );
 
-        const token = jwt.sign({ userId: newUser.rows[0].user_id, isAdmin: newUser.rows[0].is_admin}, config.get('JWT_SECRET'), { expiresIn: '1h' });
+        const token = jwt.sign({ userId: newUser.rows[0].user_id, username: newUser.rows[0].username, isAdmin: newUser.rows[0].is_admin }, config.get('JWT_SECRET'), { expiresIn: '1h' });
 
         res.setHeader('auth-token', token);
-        res.send(_.pick(newUser.rows[0], ['username','email']));
+        res.send(_.pick(newUser.rows[0], ['username', 'email']));
     
     } catch (error) {
         console.error(error.message);

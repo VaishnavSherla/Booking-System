@@ -41,14 +41,8 @@ Thunder Client is [here](/airLineThunderClient.json).
 ## Tech Stack
 - NodeJs
 - Express
-- Postgres
-
-**Incomplete Features:**
-- I didn't use the username at all. If you feel it's redundant, you can make some changes and remove it.
-- I forgot to create the `places` table. This could benefit you in searching for places like arrival and destination. My goal was to develop it and solve the double booking concurrency issue, so I didn't implement it.
-- I didn't include validations for dates (before and after). I didn't check if the user is trying to book a flight before the current date.
-
-All these issues are easily solvable!
+- PostgreSQL
+- Redis (seat reservation TTL locks)
 
 # Conclusion
 - While both pessimistic and optimistic locking have their trade-offs

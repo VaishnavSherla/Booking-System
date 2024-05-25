@@ -25,6 +25,11 @@ router.post('/', [auth, admin], async (req, res) => {
             price
         } = req.body;
 
+        // Validate arrival is after departure
+        if (new Date(arrival_time) <= new Date(departure_time)) {
+            return res.status(400).json({ error: 'arrival_time must be after departure_time' });
+        }
+
         // Start a transaction
         await client.query('BEGIN');
 

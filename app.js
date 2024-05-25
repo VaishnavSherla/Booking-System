@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const config = require('config');
+require('./redis'); // connect Redis on startup
 
 const userRoutes = require('./routes/user');
 const flightRoutes = require('./routes/flights');
 const seatRoutes = require('./routes/seats');
 const bookingRoutes = require('./routes/bookings');
 const airCraftRoutes = require('./routes/aircraft');
+const placesRoutes = require('./routes/places');
 
 const app = express();
 
@@ -19,6 +21,7 @@ app.use('/api/flights', flightRoutes);
 app.use('/api/seats', seatRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/aircraft', airCraftRoutes);
+app.use('/api/places', placesRoutes);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
