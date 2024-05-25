@@ -29,7 +29,7 @@ What i choose was first option
 
 Check high quality demo [here](/demo/Demo.mp4)
 
-**Simulation:** This Python [script](/simulation/simulate.py) simulates a double booking scenario for the booking system using multi-threading. It generates multiple user accounts, each attempting to book seats concurrently, testing the system's robustness against potential double bookings.
+**Simulation:** This Python [script](/simulation/simulate.py) simulates a double booking scenario for the booking system using multi-threading. It generates multiple user accounts, each attempting to book seats concurrently, testing the system's against potential double bookings.
 
 Results are [here](/simulation/results.txt).
 
