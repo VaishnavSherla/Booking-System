@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
+const rateLimit = require('express-rate-limit');
 const pool = require('../db');
 const redis = require('../redis');
 const bookingSchema = require('../schemas/bookingSchema');
@@ -8,8 +9,17 @@ const auth = require('../middlewares/auth');
 
 const RESERVATION_TTL = 600; // 10 minutes in seconds
 
+// Max 1 reserve attempt per user every 30 seconds
+const reserveLimiter = rateLimit({
+    windowMs: 30 * 1000,
+    max: 1,
+    keyGenerator: (req) => req.user?.userId?.toString() || req.ip,
+    handler: (req, res) => res.status(429).json({ error: 'Too many reserve attempts — wait 30 seconds before trying again' }),
+    skip: (req) => !req.user // only apply after auth parses the token
+});
+
 // Reserve a seat (holds it in Redis for TTL seconds, no DB write yet)
-router.post('/reserve', auth, async (req, res) => {
+router.post('/reserve', auth, reserveLimiter, async (req, res) => {
     const { seat_id, flight_id } = req.body;
     if (!seat_id || !flight_id) {
         return res.status(400).json({ error: 'seat_id and flight_id are required' });
@@ -161,6 +171,72 @@ router.post('/', auth, async (req, res) => {
 
         await client.query('COMMIT');
         res.json(newBooking.rows[0]);
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    } finally {
+        client.release();
+    }
+});
+
+// Get all bookings for the logged-in user
+router.get('/mine', auth, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT b.booking_id, b.booking_time, b.flight_id, b.seat_id,
+                    f.flight_number, f.departure_airport, f.destination_airport,
+                    f.departure_time, f.arrival_time, f.price,
+                    s.seat_number
+             FROM bookings b
+             JOIN flights f ON b.flight_id = f.flight_id
+             JOIN seats s ON b.seat_id = s.seat_id
+             WHERE b.user_id = $1
+             ORDER BY f.departure_time DESC`,
+            [req.user.userId]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Cancel a booking (only if flight hasn't departed yet)
+router.delete('/:id', auth, async (req, res) => {
+    const client = await pool.connect();
+    try {
+        const { id } = req.params;
+
+        // Fetch booking + flight departure time, verify it belongs to this user
+        const result = await client.query(
+            `SELECT b.booking_id, b.seat_id, b.user_id, f.departure_time
+             FROM bookings b
+             JOIN flights f ON b.flight_id = f.flight_id
+             WHERE b.booking_id = $1`,
+            [id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+
+        const booking = result.rows[0];
+
+        if (booking.user_id !== req.user.userId) {
+            return res.status(403).json({ error: 'You can only cancel your own bookings' });
+        }
+
+        if (new Date(booking.departure_time) <= new Date()) {
+            return res.status(400).json({ error: 'Cannot cancel a booking after the flight has departed' });
+        }
+
+        await client.query('BEGIN');
+        await client.query('DELETE FROM bookings WHERE booking_id = $1', [id]);
+        await client.query('UPDATE seats SET seat_status = TRUE WHERE seat_id = $1', [booking.seat_id]);
+        await client.query('COMMIT');
+
+        res.json({ message: 'Booking cancelled and seat released successfully' });
     } catch (error) {
         await client.query('ROLLBACK');
         console.error(error.message);
