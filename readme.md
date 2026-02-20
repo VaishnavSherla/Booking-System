@@ -1,5 +1,5 @@
 # Booking System: Solving Double Booking Problem!
-I implemented this project to understand how booking systems work
+I implemented this project to understand how booking systems work with Database-level pessimistic locking + Redis distributed lock with TTL for seat reservation
 
 **Issue:** When multiple users attempt to book the same seat simultaneously, it's possible for both bookings to be accepted, leading to a double booking.
 
